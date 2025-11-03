@@ -45,8 +45,14 @@ Provide a clear answer with insights. If calculations are needed, show them."""
 
 st.title("Health Insurance Analyzer")
 
-with st.sidebar:
-    api_key = st.text_input("Anthropic API Key", type="password")
+try:
+    api_key = st.secrets["ANTHROPIC_API_KEY"]
+    st.sidebar.success("API key loaded from secrets")
+except:
+    with st.sidebar:
+        api_key = st.text_input("API Key", type="password")
+        if not api_key:
+            st.warning("Please add ANTHROPIC_API_KEY to Streamlit secrets")
 
 df = load_data()
 
